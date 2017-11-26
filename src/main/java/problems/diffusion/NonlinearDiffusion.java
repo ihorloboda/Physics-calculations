@@ -2,10 +2,9 @@ package problems.diffusion;
 
 import problems.Problem;
 
-import java.io.*;
-
-public class NonLinearDiffusion implements Problem {
-    private final String fileName = "NonLinearDiffusion.txt";
+//this problem is not working
+public class NonlinearDiffusion extends Problem {
+    private final String fileName = "NonlinearDiffusion.txt";
 
     private final int countOfPoints = 3000;
     private final int countOfWriting = 10;
@@ -29,7 +28,7 @@ public class NonLinearDiffusion implements Problem {
 
     private final double diffFactor;
 
-    public NonLinearDiffusion() {
+    public NonlinearDiffusion() {
         dx = length / countOfPoints;
         function = new double[countOfPoints];
         a = new double[countOfPoints];
@@ -49,38 +48,11 @@ public class NonLinearDiffusion implements Problem {
     }
 
     @Override
-    public void calculate() {
-        setInitialConditions();
-        while (true) {
-            calculateFunction();
-            writeToFile();
-            System.out.println("Press enter to do next iteration");
-            try {
-                System.in.read();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-
-    @Override
     public void writeToFile() {
-        File file = new File(fileName);
-        try (OutputStream out = new FileOutputStream(file);
-             Writer writer = new OutputStreamWriter(out)) {
-            for (int i = 0; i < countOfPoints; i++) {
-                writer.append(String.valueOf(i * dx));
-                writer.append(" ");
-                writer.append(String.valueOf(function[i]));
-                writer.append(System.lineSeparator());
-            }
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+        writeToFile(fileName, 0, dx, countOfPoints, function);
     }
 
-    private void calculateFunction() {
+    protected void computeIteration() {
         for (int j = 0; j < countOfWriting; j++) {
             p[0] = -1;
             q[0] = 2 * borderConditionAtTheBeginning;
@@ -98,23 +70,6 @@ public class NonLinearDiffusion implements Problem {
             }
         }
     }
-
-    //Krank-Nickolson
-//    private double calculateA() {
-//        return diffCoeffPlus;
-//    }
-//
-//    private double calculateB() {
-//        return -1 + diffCoeffMinus - diffCoeffPlus;
-//    }
-//
-//    private double calculateC() {
-//        return -diffCoeffMinus;
-//    }
-//
-//    private double calculateD(int i) {
-//        return function[i] + diffCoeffPlus * (function[i + 1] - function[i]) + diffCoeffMinus * (function[i] - function[i - 1]);
-//    }
 
     private double calculateA(int i) {
         double functionAverageValue = (function[i] + function[i - 1]) / 2;

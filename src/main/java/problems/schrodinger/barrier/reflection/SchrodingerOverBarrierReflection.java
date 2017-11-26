@@ -1,11 +1,10 @@
 package problems.schrodinger.barrier.reflection;
 
 import math.Complex;
-import problems.Problem;
+import problems.QuantumProblem;
 
-import java.io.*;
-
-public class SchrodingerOverBarrierReflection implements Problem {
+//TODO check is this problem working
+public class SchrodingerOverBarrierReflection extends QuantumProblem {
     private final String fileName = "SchrodingerOverBarrierReflection.txt";
 
     private final int countOfPoints = 20000;
@@ -58,47 +57,46 @@ public class SchrodingerOverBarrierReflection implements Problem {
     }
 
     @Override
-    public void calculate() {
-        setInitialConditions();
-        while (true) {
-            calculateWaveFunction();
-            calculateNormCondition();
-            writeToFile();
-            try {
-                System.in.read();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    }
-
-    @Override
     public void writeToFile() {
-        File file = new File(fileName);
-        try (OutputStream out = new FileOutputStream(file);
-             Writer writer = new OutputStreamWriter(out)) {
-            for (int i = 0; i < countOfPoints; i++) {
-                writer.append(String.valueOf(i * dx));
-                writer.append(" ");
-                writer.append(String.valueOf(waveFunction[i].getReal()));
-                writer.append(" ");
-                writer.append(String.valueOf(potential[i]));
-                writer.append(System.lineSeparator());
-            }
-        } catch (IOException e) {
-            System.out.println("You have not access to file");
-        }
+        double[] waveFunctionRealPart = getWaveFunctionRealPart();
+        writeToFile(fileName, 0, dx, countOfPoints, potential, waveFunctionRealPart);
     }
 
-    private void calculateWaveFunction() {
+    private double[] getWaveFunctionRealPart() {
+        double[] waveFunctionRealPart = new double[countOfPoints];
+        for (int i = 0; i < countOfPoints; i++) {
+            waveFunctionRealPart[i] = waveFunction[i].getReal();
+        }
+        return waveFunctionRealPart;
+    }
+
+//    @Override
+//    public void writeToFile() {
+//        File file = new File(fileName);
+//        try (OutputStream out = new FileOutputStream(file);
+//             Writer writer = new OutputStreamWriter(out)) {
+//            for (int i = 0; i < countOfPoints; i++) {
+//                writer.append(String.valueOf(i * dx));
+//                writer.append(" ");
+//                writer.append(String.valueOf(waveFunction[i].getReal()));
+//                writer.append(" ");
+//                writer.append(String.valueOf(potential[i]));
+//                writer.append(System.lineSeparator());
+//            }
+//        } catch (IOException e) {
+//            System.out.println("You have not access to file");
+//        }
+//    }
+
+    protected void computeIteration() {
         for (int j = 0; j < countOfWriting; j++) {
             p[0] = new Complex(-1, 0);
             q[0] = new Complex(0, 0);
             for (int i = 1; i < countOfPoints - 1; i++) {
-                b[i] = calculateB(i);
-                d[i] = calculateD(i);
-                p[i] = calculateP(i);
-                q[i] = calculateQ(i);
+                b[i] = computeB(i);
+                d[i] = computeD(i);
+                p[i] = computeP(i);
+                q[i] = computeQ(i);
             }
             waveFunction[countOfPoints - 1] = Complex.divide(
                     Complex.getNegative(q[countOfPoints - 2]),
@@ -116,7 +114,7 @@ public class SchrodingerOverBarrierReflection implements Problem {
         }
     }
 
-    private void calculateNormCondition() {
+    protected void computeNormCondition() {
         double totalIntensity = 0;
         double sumBeforeBarrier = 0;
         double sumAfterBarrier = 0;
@@ -135,11 +133,11 @@ public class SchrodingerOverBarrierReflection implements Problem {
         System.out.println(System.lineSeparator());
     }
 
-    private Complex calculateB(int i) {
+    private Complex computeB(int i) {
         return new Complex(1, dt / 2 * (1 / Math.pow(dx, 2) + potential[i]));
     }
 
-    private Complex calculateD(int i) {
+    private Complex computeD(int i) {
         return Complex.add(
                 Complex.multiply(
                         a,
@@ -152,7 +150,7 @@ public class SchrodingerOverBarrierReflection implements Problem {
         );
     }
 
-    private Complex calculateP(int i) {
+    private Complex computeP(int i) {
         return Complex.divide(
                 a,
                 Complex.subtract(
@@ -164,7 +162,7 @@ public class SchrodingerOverBarrierReflection implements Problem {
                 ));
     }
 
-    private Complex calculateQ(int i) {
+    private Complex computeQ(int i) {
         return Complex.divide(
                 Complex.add(
                         d[i],
