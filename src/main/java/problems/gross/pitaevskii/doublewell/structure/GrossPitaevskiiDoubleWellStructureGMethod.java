@@ -2,7 +2,7 @@ package problems.gross.pitaevskii.doublewell.structure;
 
 import static java.lang.Math.pow;
 
-//this problem is not working
+//doesn't work (tends to zero)
 public class GrossPitaevskiiDoubleWellStructureGMethod extends GrossPitaevskiiDoubleWellStructure {
     private final double a;
     private final double c;
@@ -15,14 +15,14 @@ public class GrossPitaevskiiDoubleWellStructureGMethod extends GrossPitaevskiiDo
 
     public GrossPitaevskiiDoubleWellStructureGMethod() {
         super("GrossPitaevskiiDoubleWellStructureGMethod.txt");
-        a = dt / (2 * dx);
+        a = dt / (2 * pow(dx, 2));
         c = a;
+        bTerm = 1 - chemicalPotential + 2 * a;
         waveFunction = new double[countOfPoints];
         b = new double[countOfPoints];
         d = new double[countOfPoints];
         p = new double[countOfPoints];
         q = new double[countOfPoints];
-        bTerm = 1 - chemicalPotential + 2 * a;
     }
 
     @Override
@@ -30,11 +30,11 @@ public class GrossPitaevskiiDoubleWellStructureGMethod extends GrossPitaevskiiDo
         p[0] = -1;
         q[0] = 2 * leftBorderCondition;
         for (int i = 1; i < countOfPoints - 1; i++) {
-            double nonlinearTerm = potential[i] * pow(waveFunction[i], 2) / 2;
-            double denominator = (b[i] - c * p[i - 1]);
+            double nonlinearTerm = freeTermFunction(i);
             b[i] = computeB(nonlinearTerm);
             d[i] = computeD(i, nonlinearTerm);
-            p[i] = computeP(i, denominator);
+            double denominator = (b[i] - c * p[i - 1]);
+            p[i] = computeP(denominator);
             q[i] = computeQ(i, denominator);
         }
     }
@@ -48,7 +48,7 @@ public class GrossPitaevskiiDoubleWellStructureGMethod extends GrossPitaevskiiDo
                 + (chemicalPotential + nonlinearTerm) * waveFunction[i];
     }
 
-    private double computeP(int i, double denominator) {
+    private double computeP(double denominator) {
         return a / denominator;
     }
 
@@ -56,9 +56,8 @@ public class GrossPitaevskiiDoubleWellStructureGMethod extends GrossPitaevskiiDo
         return (d[i] + c * q[i - 1]) / denominator;
     }
 
-    //TODO write this function
     @Override
     protected double freeTermFunction(int i) {
-        return 0;
+        return -2 * potential[i] * pow(waveFunction[i], 2);
     }
 }

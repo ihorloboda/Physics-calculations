@@ -7,11 +7,11 @@ import static java.lang.Math.*;
 public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem {
     protected final String fileName;
 
-    protected final double borderCoordinate = 30;
+    protected final double borderCoordinate = 10;
     protected final int countOfPoints = 1001;
     protected final int countOfWriting = 1;
     protected final double chemicalPotential = -0.075;
-    protected final double widthOfPotential = 0.02;
+    protected final double widthOfPotential = 0.2;
     protected final double coeffA = 0.5;
     protected final double coeffB = 1;
     protected final double leftBorderCondition;
@@ -47,14 +47,14 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
 
     @Override
     public void writeToFile() {
-        writeToFile(fileName, -borderCoordinate, dx, countOfPoints, waveFunction);
+        writeToFile(fileName, -borderCoordinate, dx, countOfPoints, potential, waveFunction);
     }
 
     @Override
     public void setInitialConditions() {
         for (int i = 0; i < countOfPoints; i++) {
             double x = i * dx - borderCoordinate;
-            potential[i] = 2 / (widthOfPotential * sqrt(PI)) * (exp(-pow((x + 1) / widthOfPotential, 2))
+            potential[i] = -1 / (widthOfPotential * sqrt(PI)) * (exp(-pow((x + 1) / widthOfPotential, 2))
                     + exp(-pow((x - 1) / widthOfPotential, 2)));
             waveFunction[i] = initialFunction(x);
         }

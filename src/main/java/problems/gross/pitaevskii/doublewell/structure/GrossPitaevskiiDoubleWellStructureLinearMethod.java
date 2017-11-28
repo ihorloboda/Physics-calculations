@@ -2,7 +2,7 @@ package problems.gross.pitaevskii.doublewell.structure;
 
 import static java.lang.Math.pow;
 
-//doesn't work
+//doesn't work (grows to infinity)
 public class GrossPitaevskiiDoubleWellStructureLinearMethod extends GrossPitaevskiiDoubleWellStructure {
     public GrossPitaevskiiDoubleWellStructureLinearMethod() {
         super("GrossPitaevskiiDoubleWellStructureLinearMethod.txt");
@@ -15,7 +15,7 @@ public class GrossPitaevskiiDoubleWellStructureLinearMethod extends GrossPitaevs
         for (int i = 1; i < countOfPoints - 1; i++) {
             double denominator = b - c * p[i - 1];
             d[i] = computeD(i);
-            p[i] = computeP(i, denominator);
+            p[i] = computeP(denominator);
             q[i] = computeQ(i, denominator);
         }
     }
@@ -24,7 +24,7 @@ public class GrossPitaevskiiDoubleWellStructureLinearMethod extends GrossPitaevs
         return waveFunction[i] + freeTermFunction(i);
     }
 
-    private double computeP(int i, double denominator) {
+    private double computeP(double denominator) {
         return a / denominator;
     }
 
@@ -41,6 +41,6 @@ public class GrossPitaevskiiDoubleWellStructureLinearMethod extends GrossPitaevs
     @Override
     protected double freeTermFunction(int i) {
         double function = 0.5 * (waveFunction[i + 1] + waveFunction[i]);
-        return 2 * chemicalPotential * function + potential[i] * pow(function, 3);
+        return 2 * (chemicalPotential * function + potential[i] * pow(function, 3));
     }
 }
