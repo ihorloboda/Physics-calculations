@@ -3,7 +3,6 @@ package problems.schrodinger.barrier.reflection;
 import math.Complex;
 import problems.QuantumProblem;
 
-//TODO check is this problem working
 public class SchrodingerOverBarrierReflection extends QuantumProblem {
     private final String fileName = "SchrodingerOverBarrierReflection.txt";
 
@@ -69,24 +68,6 @@ public class SchrodingerOverBarrierReflection extends QuantumProblem {
         }
         return waveFunctionRealPart;
     }
-
-//    @Override
-//    public void writeToFile() {
-//        File file = new File(fileName);
-//        try (OutputStream out = new FileOutputStream(file);
-//             Writer writer = new OutputStreamWriter(out)) {
-//            for (int i = 0; i < countOfPoints; i++) {
-//                writer.append(String.valueOf(i * dx));
-//                writer.append(" ");
-//                writer.append(String.valueOf(waveFunction[i].getReal()));
-//                writer.append(" ");
-//                writer.append(String.valueOf(potential[i]));
-//                writer.append(System.lineSeparator());
-//            }
-//        } catch (IOException e) {
-//            System.out.println("You have not access to file");
-//        }
-//    }
 
     protected void computeIteration() {
         for (int j = 0; j < countOfWriting; j++) {

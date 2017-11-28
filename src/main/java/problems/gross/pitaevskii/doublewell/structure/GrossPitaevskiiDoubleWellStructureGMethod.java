@@ -26,22 +26,16 @@ public class GrossPitaevskiiDoubleWellStructureGMethod extends GrossPitaevskiiDo
     }
 
     @Override
-    protected void computeIteration() {
-        for (int j = 0; j < countOfWriting; j++) {
-            p[0] = -1;
-            q[0] = 2 * leftBorderCondition;
-            for (int i = 1; i < countOfPoints - 1; i++) {
-                double nonlinearTerm = potential[i] * pow(waveFunction[i], 2) / 2;
-                double denominator = (b[i] - c * p[i - 1]);
-                b[i] = computeB(nonlinearTerm);
-                d[i] = computeD(i, nonlinearTerm);
-                p[i] = computeP(i, denominator);
-                q[i] = computeQ(i, denominator);
-            }
-            waveFunction[countOfPoints - 1] = (2 * rightBorderCondition - q[countOfPoints - 2]) / (1 + p[countOfPoints - 2]);
-            for (int i = countOfPoints - 2; i >= 0; i--) {
-                waveFunction[i] = p[i] * waveFunction[i + 1] + q[i];
-            }
+    protected void computeCoefficients() {
+        p[0] = -1;
+        q[0] = 2 * leftBorderCondition;
+        for (int i = 1; i < countOfPoints - 1; i++) {
+            double nonlinearTerm = potential[i] * pow(waveFunction[i], 2) / 2;
+            double denominator = (b[i] - c * p[i - 1]);
+            b[i] = computeB(nonlinearTerm);
+            d[i] = computeD(i, nonlinearTerm);
+            p[i] = computeP(i, denominator);
+            q[i] = computeQ(i, denominator);
         }
     }
 
@@ -60,5 +54,11 @@ public class GrossPitaevskiiDoubleWellStructureGMethod extends GrossPitaevskiiDo
 
     private double computeQ(int i, double denominator) {
         return (d[i] + c * q[i - 1]) / denominator;
+    }
+
+    //TODO write this function
+    @Override
+    protected double freeTermFunction(int i) {
+        return 0;
     }
 }

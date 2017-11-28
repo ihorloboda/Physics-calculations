@@ -20,15 +20,29 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
     protected double[] waveFunction;
     protected final double[] potential;
 
+    protected final double a;
+    protected final double b;
+    protected final double c;
+    protected double[] d;
+    protected double[] p;
+    protected double[] q;
+
     protected final double dx;
     protected final double dt = 0.1;
 
     protected GrossPitaevskiiDoubleWellStructure(String fileName) {
         this.fileName = fileName;
         potential = new double[countOfPoints];
+        waveFunction = new double[countOfPoints];
         leftBorderCondition = initialFunction(-borderCoordinate);
         rightBorderCondition = initialFunction(borderCoordinate);
         dx = 2 * borderCoordinate / countOfPoints;
+        a = dt / pow(dx, 2);
+        b = 2 * dt / pow(dx, 2) + 1;
+        c = dt / pow(dx, 2);
+        d = new double[countOfPoints];
+        p = new double[countOfPoints];
+        q = new double[countOfPoints];
     }
 
     @Override
@@ -46,6 +60,26 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
         }
     }
 
+    @Override
+    public void computeIteration() {
+        for (int i = 0; i < countOfWriting; i++) {
+            computeCoefficients();
+            computeWaveFunction();
+        }
+    }
+
+    protected abstract void computeCoefficients();
+
+    protected abstract double freeTermFunction(int i);
+
+    protected void computeWaveFunction() {
+        waveFunction[countOfPoints - 1] = (2 * rightBorderCondition - q[countOfPoints - 2]) / (1 + p[countOfPoints - 2]);
+        for (int i = countOfPoints - 2; i >= 0; i--) {
+            waveFunction[i] = p[i] * waveFunction[i + 1] + q[i];
+        }
+    }
+
+    @Override
     protected void computeNormCondition() {
         double sum = 0;
         for (int i = 0; i < countOfPoints; i++) {
@@ -58,5 +92,4 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
         return coeffA / cosh(2 * (x - 1)) + coeffB / cosh(2 * (x + 1));
     }
 
-    protected abstract void computeIteration();
 }
