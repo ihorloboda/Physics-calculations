@@ -37,7 +37,9 @@ public class GrossPitaevskiiDoubleWellStructureNonlinearMethod extends GrossPita
 
     @Override
     protected double freeTermFunction(int i) {
-        double approximation = (waveFunction[i + 1] + 2 * waveFunction[i] + waveFunction[i - 1]) / 4;
+        //there is no difference between these two approximations
+//        double approximation = (waveFunction[i + 1] + 2 * waveFunction[i] + waveFunction[i - 1]) / 4;
+        double approximation = (waveFunction[i + 1] + waveFunction[i]) / 2;
         return approximation * (2 * chemicalPotential - potential[i] * pow(approximation, 2));
     }
 }
