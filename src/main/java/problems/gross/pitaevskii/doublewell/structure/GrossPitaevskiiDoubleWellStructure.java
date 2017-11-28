@@ -20,9 +20,9 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
     protected double[] waveFunction;
     protected final double[] potential;
 
-    protected final double a;
+    protected double a;
     protected final double b;
-    protected final double c;
+    protected double c;
     protected double[] d;
     protected double[] p;
     protected double[] q;
