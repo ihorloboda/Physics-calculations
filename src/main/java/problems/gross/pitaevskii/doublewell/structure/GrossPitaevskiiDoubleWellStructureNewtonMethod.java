@@ -19,21 +19,36 @@ public class GrossPitaevskiiDoubleWellStructureNewtonMethod extends GrossPitaevs
         p[0] = -1;
         q[0] = 2 * leftBorderCondition;
         for (int i = 1; i < countOfPoints - 1; i++) {
-            b[i] = computeB(i);
-            d[i] = computeD(i);
+            double freeTerm = freeTermFunction(i);
+            b[i] = computeB(i, freeTerm);
+            d[i] = computeD(i, freeTerm);
             double denominator = (b[i] - c * p[i - 1]);
             p[i] = computeP(denominator);
+            if (abs(p[i]) > 1) {
+                throw new IllegalArgumentException("p[" + i + "] > 1");
+            }
             q[i] = computeQ(i, denominator);
         }
     }
 
-    private double computeB(int i) {
-        return 2 * (1 + pow(dx, 2) * (1 / dt + 3 * potential[i] * pow(waveFunction[i], 2) - chemicalPotential));
+    //with df/dt
+//    private double computeB(int i) {
+//        return 2 * (1 + pow(dx, 2) * (1 / dt + 3 * potential[i] * pow(waveFunction[i], 2) - chemicalPotential));
+//    }
+
+    //with df/dt
+//    private double computeD(int i) {
+//        return waveFunction[i + 1] - 2 * waveFunction[i] + waveFunction[i - 1] + pow(dx, 2) * freeTermFunction(i);
+//    }
+
+    private double computeB(int i, double freeTerm) {
+        return 2 + pow(dx, 2) * freeTerm;
     }
 
-    private double computeD(int i) {
-        return waveFunction[i + 1] - 2 * waveFunction[i] + waveFunction[i - 1] + pow(dx, 2) * freeTermFunction(i);
+    private double computeD(int i, double freeTerm) {
+        return waveFunction[i + 1] - 2 * waveFunction[i] + waveFunction[i - 1] - pow(dx, 2) * freeTerm;
     }
+
 
     private double computeP(double denominator) {
         return a / denominator;
@@ -56,6 +71,6 @@ public class GrossPitaevskiiDoubleWellStructureNewtonMethod extends GrossPitaevs
 
     @Override
     protected double freeTermFunction(int i) {
-        return 2 * (chemicalPotential + potential[i] * pow(waveFunction[i], 2)) * waveFunction[i];
+        return -2 * (chemicalPotential - potential[i] * pow(waveFunction[i], 2)) * waveFunction[i];
     }
 }

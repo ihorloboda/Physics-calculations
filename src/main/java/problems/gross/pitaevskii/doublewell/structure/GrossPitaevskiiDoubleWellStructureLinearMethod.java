@@ -1,5 +1,6 @@
 package problems.gross.pitaevskii.doublewell.structure;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 
 //doesn't work (grows to infinity)
@@ -16,6 +17,9 @@ public class GrossPitaevskiiDoubleWellStructureLinearMethod extends GrossPitaevs
             double denominator = b - c * p[i - 1];
             d[i] = computeD(i);
             p[i] = computeP(denominator);
+            if (abs(p[i]) > 1) {
+                throw new IllegalArgumentException("p[" + i + "] > 1");
+            }
             q[i] = computeQ(i, denominator);
         }
     }

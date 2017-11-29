@@ -1,5 +1,6 @@
 package problems.gross.pitaevskii.doublewell.structure;
 
+import static java.lang.Math.abs;
 import static java.lang.Math.pow;
 
 //doesn't work (tends to zero)
@@ -35,6 +36,9 @@ public class GrossPitaevskiiDoubleWellStructureGMethod extends GrossPitaevskiiDo
             d[i] = computeD(i, nonlinearTerm);
             double denominator = (b[i] - c * p[i - 1]);
             p[i] = computeP(denominator);
+            if (abs(p[i]) > 1) {
+                throw new IllegalArgumentException("p[" + i + "] > 1");
+            }
             q[i] = computeQ(i, denominator);
         }
     }

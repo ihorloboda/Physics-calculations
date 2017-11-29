@@ -3,6 +3,8 @@ package problems.schrodinger.barrier.reflection;
 import math.Complex;
 import problems.QuantumProblem;
 
+import static java.lang.Math.abs;
+
 public class SchrodingerOverBarrierReflection extends QuantumProblem {
     private final String fileName = "SchrodingerOverBarrierReflection.txt";
 
@@ -77,6 +79,9 @@ public class SchrodingerOverBarrierReflection extends QuantumProblem {
                 b[i] = computeB(i);
                 d[i] = computeD(i);
                 p[i] = computeP(i);
+                if (abs(p[i].getModulus()) > 1) {
+                    throw new IllegalArgumentException("p[" + i + "] > 1");
+                }
                 q[i] = computeQ(i);
             }
             waveFunction[countOfPoints - 1] = Complex.divide(

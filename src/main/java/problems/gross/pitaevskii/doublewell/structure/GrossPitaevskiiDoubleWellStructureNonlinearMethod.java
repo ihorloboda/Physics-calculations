@@ -19,6 +19,9 @@ public class GrossPitaevskiiDoubleWellStructureNonlinearMethod extends GrossPita
             d[i] = computeD(i);
             double denominator = (b - c * p[i - 1]);
             p[i] = computeP(denominator);
+            if (abs(p[i]) > 1) {
+                throw new IllegalArgumentException("p[" + i + "] > 1");
+            }
             q[i] = computeQ(i, denominator);
         }
     }

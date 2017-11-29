@@ -14,8 +14,8 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
     protected final double widthOfPotential = 0.2;
     protected final double coeffA = 0.5;
     protected final double coeffB = 1;
-    protected final double leftBorderCondition;
-    protected final double rightBorderCondition;
+    protected final double leftBorderCondition = 0;
+    protected final double rightBorderCondition = 0;
 
     protected double[] waveFunction;
     protected final double[] potential;
@@ -34,8 +34,8 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
         this.fileName = fileName;
         potential = new double[countOfPoints];
         waveFunction = new double[countOfPoints];
-        leftBorderCondition = initialFunction(-borderCoordinate);
-        rightBorderCondition = initialFunction(borderCoordinate);
+//        leftBorderCondition = initialFunction(-borderCoordinate);
+//        rightBorderCondition = initialFunction(borderCoordinate);
         dx = 2 * borderCoordinate / countOfPoints;
         a = dt / pow(dx, 2);
         b = 2 * dt / pow(dx, 2) + 1;
