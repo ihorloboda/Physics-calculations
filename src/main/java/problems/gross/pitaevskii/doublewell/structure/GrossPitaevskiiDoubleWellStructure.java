@@ -7,13 +7,16 @@ import static java.lang.Math.*;
 public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem {
     protected final String fileName;
 
+    //for sym A = B = 0.5;
+    //for asym A = 0.6, B = 0.3
+    //for antisym A = 2;
+    protected final double coeffA = 0.6;
+    protected final double coeffB = 0.3;
     protected final double borderCoordinate = 10;
     protected final int countOfPoints = 1001;
     protected final int countOfWriting = 1;
     protected final double chemicalPotential = -0.075;
     protected final double widthOfPotential = 0.2;
-    protected final double coeffA = 0.5;
-    protected final double coeffB = 1;
     protected final double leftBorderCondition = 0;
     protected final double rightBorderCondition = 0;
 
@@ -34,8 +37,6 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
         this.fileName = fileName;
         potential = new double[countOfPoints];
         waveFunction = new double[countOfPoints];
-//        leftBorderCondition = initialFunction(-borderCoordinate);
-//        rightBorderCondition = initialFunction(borderCoordinate);
         dx = 2 * borderCoordinate / countOfPoints;
         a = dt / pow(dx, 2);
         b = 2 * dt / pow(dx, 2) + 1;
@@ -90,6 +91,6 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
 
     protected double initialFunction(double x) {
         return coeffA / cosh(2 * (x - 1)) + coeffB / cosh(2 * (x + 1));
+//        return coeffA*sin(x)/cosh(x);
     }
-
 }
