@@ -6,7 +6,7 @@ import problems.QuantumProblem;
 import static java.lang.Math.abs;
 
 public class SchrodingerOverBarrierReflection extends QuantumProblem {
-    private final String fileName = "SchrodingerOverBarrierReflection.txt";
+    private final String fileName = "output/obr.txt";
 
     private final int countOfPoints = 20000;
     private final int countOfWriting = 1000;

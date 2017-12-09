@@ -1,4 +1,4 @@
-package problems.gross.pitaevskii.doublewell.structure;
+package problems.doublewell.structure;
 
 import problems.QuantumProblem;
 
@@ -20,7 +20,7 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
     protected final double leftBorderCondition = 0;
     protected final double rightBorderCondition = 0;
 
-    protected double[] waveFunction;
+    protected double[] function;
     protected final double[] potential;
 
     protected double a;
@@ -36,7 +36,7 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
     protected GrossPitaevskiiDoubleWellStructure(String fileName) {
         this.fileName = fileName;
         potential = new double[countOfPoints];
-        waveFunction = new double[countOfPoints];
+        function = new double[countOfPoints];
         dx = 2 * borderCoordinate / countOfPoints;
         a = dt / pow(dx, 2);
         b = 2 * dt / pow(dx, 2) + 1;
@@ -48,7 +48,7 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
 
     @Override
     public void writeToFile() {
-        writeToFile(fileName, -borderCoordinate, dx, countOfPoints, potential, waveFunction);
+        writeToFile(fileName, -borderCoordinate, dx, countOfPoints, potential, function);
     }
 
     @Override
@@ -57,7 +57,7 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
             double x = i * dx - borderCoordinate;
             potential[i] = -1 / (widthOfPotential * sqrt(PI)) * (exp(-pow((x + 1) / widthOfPotential, 2))
                     + exp(-pow((x - 1) / widthOfPotential, 2)));
-            waveFunction[i] = initialFunction(x);
+            function[i] = initialFunction(x);
         }
     }
 
@@ -74,9 +74,9 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
     protected abstract double freeTermFunction(int i);
 
     protected void computeWaveFunction() {
-        waveFunction[countOfPoints - 1] = (2 * rightBorderCondition - q[countOfPoints - 2]) / (1 + p[countOfPoints - 2]);
+        function[countOfPoints - 1] = (2 * rightBorderCondition - q[countOfPoints - 2]) / (1 + p[countOfPoints - 2]);
         for (int i = countOfPoints - 2; i >= 0; i--) {
-            waveFunction[i] = p[i] * waveFunction[i + 1] + q[i];
+            function[i] = p[i] * function[i + 1] + q[i];
         }
     }
 
@@ -84,7 +84,7 @@ public abstract class GrossPitaevskiiDoubleWellStructure extends QuantumProblem 
     protected void computeNormCondition() {
         double sum = 0;
         for (int i = 0; i < countOfPoints; i++) {
-            sum += pow(waveFunction[i], 2);
+            sum += pow(function[i], 2);
         }
         System.out.println("Norm: " + sum);
     }

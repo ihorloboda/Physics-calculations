@@ -4,7 +4,7 @@ import problems.Problem;
 
 //this problem is not working
 public class NonlinearDiffusion extends Problem {
-    private final String fileName = "NonlinearDiffusion.txt";
+    private final String fileName = "output/nld.txt";
 
     private final int countOfPoints = 3000;
     private final int countOfWriting = 10;

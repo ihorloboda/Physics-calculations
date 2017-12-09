@@ -1,4 +1,4 @@
-package problems.gross.pitaevskii.doublewell.structure;
+package problems.doublewell.structure;
 
 import static java.lang.Math.*;
 
@@ -7,7 +7,7 @@ public class GrossPitaevskiiDoubleWellStructureNewtonMethod extends GrossPitaevs
     private double[] b;
 
     public GrossPitaevskiiDoubleWellStructureNewtonMethod() {
-        super("GrossPitaevskiiDoubleWellStructureNewtonMethod.txt");
+        super("output/dws.txt");
         b = new double[countOfPoints];
         a = 1;
         c = 1;
@@ -33,7 +33,7 @@ public class GrossPitaevskiiDoubleWellStructureNewtonMethod extends GrossPitaevs
     }
 
     private double computeD(int i, double freeTerm, double freeTermDerivative) {
-        return pow(dx, 2) * (-freeTerm + freeTermDerivative * waveFunction[i]);
+        return pow(dx, 2) * (-freeTerm + freeTermDerivative * function[i]);
     }
 
 
@@ -47,18 +47,18 @@ public class GrossPitaevskiiDoubleWellStructureNewtonMethod extends GrossPitaevs
 
     @Override
     protected void computeWaveFunction() {
-        waveFunction[countOfPoints - 1] = rightBorderCondition;
+        function[countOfPoints - 1] = rightBorderCondition;
         for (int i = countOfPoints - 2; i >= 0; i--) {
-            waveFunction[i] = p[i] * waveFunction[i + 1] + q[i];
+            function[i] = p[i] * function[i + 1] + q[i];
         }
     }
 
     @Override
     protected double freeTermFunction(int i) {
-        return -2 * (chemicalPotential - potential[i] * pow(waveFunction[i], 2)) * waveFunction[i];
+        return -2 * (chemicalPotential - potential[i] * pow(function[i], 2)) * function[i];
     }
 
     private double freeTermFunctionDerivative(int i) {
-        return -2 * chemicalPotential + 6 * potential[i] * pow(waveFunction[i], 2);
+        return -2 * chemicalPotential + 6 * potential[i] * pow(function[i], 2);
     }
 }
