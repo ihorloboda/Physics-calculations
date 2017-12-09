@@ -17,4 +17,7 @@
 *.iws
 *.iml
 *.ipr
+
+#Output files
 *.txt
+output/

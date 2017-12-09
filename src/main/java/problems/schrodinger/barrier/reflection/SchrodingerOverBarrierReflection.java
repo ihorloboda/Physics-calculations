@@ -85,7 +85,7 @@ public class SchrodingerOverBarrierReflection extends QuantumProblem {
                 q[i] = computeQ(i);
             }
             waveFunction[countOfPoints - 1] = Complex.divide(
-                    Complex.getNegative(q[countOfPoints - 2]),
+                    Complex.negative(q[countOfPoints - 2]),
                     Complex.add(1, p[countOfPoints - 2])
             );
             for (int i = countOfPoints - 2; i >= 0; i--) {

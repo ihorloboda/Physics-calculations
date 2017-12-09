@@ -42,21 +42,37 @@ public class Complex {
         return new Complex(c1.getReal() + c2.getReal(), c1.getImage() + c2.getImage());
     }
 
+    public static Complex add(Complex... c) {
+        Complex sum = c[0];
+        for (int i = 1; i < c.length; i++) {
+            sum = add(sum, c[i]);
+        }
+        return sum;
+    }
+
     public static Complex add(double d, Complex c) {
         return new Complex(d + c.getReal(), c.getImage());
     }
 
     public static Complex subtract(Complex c1, Complex c2) {
-        return add(c1, getNegative(c2));
+        return add(c1, negative(c2));
     }
 
-    public static Complex getNegative(Complex c) {
+    public static Complex negative(Complex c) {
         return new Complex(-c.getReal(), -c.getImage());
     }
 
     public static Complex multiply(Complex c1, Complex c2) {
         return new Complex(c1.getReal() * c2.getReal() - c1.getImage() * c2.getImage(),
                 c1.getReal() * c2.getImage() + c1.getImage() * c2.getReal());
+    }
+
+    public static Complex multiply(Complex... c) {
+        Complex product = c[0];
+        for (int i = 1; i < c.length; i++) {
+            product = multiply(product, c[i]);
+        }
+        return product;
     }
 
     public static Complex multiply(double d, Complex c) {
