@@ -46,11 +46,12 @@ public class GrossPitaevskiiDoubleWellStructureNewtonMethod extends GrossPitaevs
     }
 
     @Override
-    protected void computeWaveFunction() {
+    protected void computeFunction() {
         function[countOfPoints - 1] = rightBorderCondition;
         for (int i = countOfPoints - 2; i >= 0; i--) {
             function[i] = p[i] * function[i + 1] + q[i];
         }
+        computeWaveFunction();
     }
 
     @Override

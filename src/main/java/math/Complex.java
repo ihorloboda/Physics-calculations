@@ -1,6 +1,9 @@
 package math;
 
 public class Complex {
+    public static final Complex EIN = new Complex(0, 1);
+    public static final Complex ZERO = new Complex(0, 0);
+
     private double real;
     private double image;
 
@@ -54,8 +57,20 @@ public class Complex {
         return new Complex(d + c.getReal(), c.getImage());
     }
 
+    public Complex conjugate() {
+        return new Complex(real, -image);
+    }
+
+    public static Complex conjugate(Complex c) {
+        return new Complex(c.real, -c.image);
+    }
+
     public static Complex subtract(Complex c1, Complex c2) {
         return add(c1, negative(c2));
+    }
+
+    public static Complex subtract(double d, Complex c) {
+        return subtract(new Complex(d, 0), c);
     }
 
     public static Complex negative(Complex c) {
@@ -77,6 +92,10 @@ public class Complex {
 
     public static Complex multiply(double d, Complex c) {
         return new Complex(d * c.getReal(), d * c.getImage());
+    }
+
+    public static Complex sqr(Complex c) {
+        return multiply(c, c);
     }
 
     public static Complex divide(Complex c1, Complex c2) {

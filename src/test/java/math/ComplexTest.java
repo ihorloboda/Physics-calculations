@@ -12,6 +12,8 @@ public class ComplexTest {
     Complex c4;
     double d;
 
+    double precision = 1E-10;
+
     @Before
     public void before() {
         c1 = new Complex(-2, 3);
@@ -40,9 +42,15 @@ public class ComplexTest {
     }
 
     @Test
-    public void subtract() {
+    public void subtractComplex() {
         Complex expected = new Complex(-5, 8);
         assertEquals(expected, Complex.subtract(c1, c2));
+    }
+
+    @Test
+    public void substractDouble() {
+        Complex expected = new Complex(4, -3);
+        assertEquals(expected, Complex.subtract(d, c1));
     }
 
     @Test
@@ -70,6 +78,12 @@ public class ComplexTest {
     }
 
     @Test
+    public void sqr() {
+        Complex expected = new Complex(-3, -4);
+        assertEquals(expected, Complex.sqr(c4));
+    }
+
+    @Test
     public void divideComplex() {
         Complex expected = new Complex(-21. / 34, -1. / 34);
         assertEquals(expected, Complex.divide(c1, c2));
@@ -84,6 +98,8 @@ public class ComplexTest {
     @Test
     public void exp() {
         Complex expected = new Complex(-Math.exp(1), 0);
-        assertEquals(expected, Complex.exp(c3));
+        Complex actual = Complex.exp(c3);
+        assertEquals(expected.getReal(), actual.getReal(), precision);
+        assertEquals(expected.getImage(), actual.getImage(), precision);
     }
 }
